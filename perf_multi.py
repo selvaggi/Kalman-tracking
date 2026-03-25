@@ -9,6 +9,7 @@ from pathlib import Path
 import matplotlib
 matplotlib.use("Agg")  # batch mode
 import matplotlib.pyplot as plt
+import matplotlib.colors as mcolors
 from matplotlib.patches import Rectangle
 from matplotlib.ticker import FuncFormatter  # for % ticks
 
@@ -20,79 +21,93 @@ from matplotlib.ticker import FuncFormatter  # for % ticks
 PLOT_CFG = {
     "Pt": {
         "ylabel": r"$\sigma(p_T)/p_T$",
-        "xlabel_p": r"$p$ [GeV]",
+        "xlabel_p": r"$p_T$ [GeV]",
         "xlabel_t": r"$\theta$ [deg]",
         "ymin": 0e-3,
-        "ymax": 5e-3,
+        "ymax": 1e-2,
         "logx_p": True,
         "logx_t": False,
         "logy": False,
-        "ratio_ymin_p": 0.95,
-        "ratio_ymax_p": 1.05,
+        "ratio_ymin_p": 0.0,
+        "ratio_ymax_p": 2.0,
         "ratio_ymin_t": 0.0,
         "ratio_ymax_t": 2.0,
     },
 
     "D": {
         "ylabel": r"$\sigma(d_0)$ [$\mu$m]",
-        "xlabel_p": r"$p$ [GeV]",
+        "xlabel_p": r"$p_T$ [GeV]",
         "xlabel_t": r"$\theta$ [deg]",
         "ymin": 1,
         "ymax": 200.0,
         "logx_p": False,
         "logx_t": False,
         "logy": True,
-        "ratio_ymin_p": 0.99,
-        "ratio_ymax_p": 1.01,
-        "ratio_ymin_t": 0.0,
-        "ratio_ymax_t": 2.0,
+        "ratio_ymin_p": 0.8,
+        "ratio_ymax_p": 1.5,
+        "ratio_ymin_t": 0.8,
+        "ratio_ymax_t": 1.5,
     },
 
     "Z0": {
         "ylabel": r"$\sigma(z_0)$ [$\mu$m]",
-        "xlabel_p": r"$p$ [GeV]",
+        "xlabel_p": r"$p_T$ [GeV]",
         "xlabel_t": r"$\theta$ [deg]",
         "ymin": 1,
         "ymax": 200.0,
         "logx_p": False,
         "logx_t": False,
         "logy": True,
-        "ratio_ymin_p": 0.99,
-        "ratio_ymax_p": 1.01,
-        "ratio_ymin_t": 0.0,
-        "ratio_ymax_t": 2.0,
+        "ratio_ymin_p": 0.8,
+        "ratio_ymax_p": 1.5,
+        "ratio_ymin_t": 0.8,
+        "ratio_ymax_t": 1.5,
     },
 
         "Theta": {
         "ylabel": r"$\sigma(\theta)$",
-        "xlabel_p": r"$p$ [GeV]",
+        "xlabel_p": r"$p_T$ [GeV]",
         "xlabel_t": r"$\theta$ [deg]",
-        "ymin": 1e-5,
-        "ymax": 1e-2,
+        "ymin": 1e-6,
+        "ymax": 2e-3,
         "logx_p": False,
         "logx_t": False,
         "logy": True,
-        "ratio_ymin_p": 0.9,
-        "ratio_ymax_p": 1.1,
-        "ratio_ymin_t": 0.0,
+        "ratio_ymin_p": 1.0,
+        "ratio_ymax_p": 2.0,
+        "ratio_ymin_t": 1.0,
         "ratio_ymax_t": 2.0,
     },
 
     "Phi": {
         "ylabel": r"$\sigma(\varphi_0)$",
-        "xlabel_p": r"$p$ [GeV]",
+        "xlabel_p": r"$p_T$ [GeV]",
         "xlabel_t": r"$\theta$ [deg]",
         "ymin": 1e-5,
         "ymax": 1e-2,
         "logx_p": False,
         "logx_t": False,
         "logy": True,
-        "ratio_ymin_p": 0.99,
-        "ratio_ymax_p": 1.01,
-        "ratio_ymin_t": 0.0,
+        "ratio_ymin_p": 1.0,
+        "ratio_ymax_p": 2.0,
+        "ratio_ymin_t": 1.0,
         "ratio_ymax_t": 2.0,
     },
 
+}
+
+# Geometry (r-z) plot configuration (in-file, not via argparse)
+GEO_CFG = {
+    "zmax": 3,    # override z-axis limit [m]. None -> auto (from layer extents + margin)
+    "rmax": 3,    # override r-axis limit [m]. None -> auto (from layer extents + margin)
+    "dpi":  200,
+}
+
+# Zoomed vertex region geometry plot configuration
+GEO_VTX_CFG = {
+    "zmax": 0.40,  # zoom to vertex region in z [m]
+    "rmax": 0.06,  # zoom to vertex region in r [m]
+    "dpi":  200,
 }
 
 # Material-budget plot configuration (in-file, not via argparse)
@@ -100,13 +115,13 @@ MAT_CFG = {
     "bins": 100,              # number of cos(theta) bins
     "cmin": -0.99,            # min cos(theta)
     "cmax": 0.99,             # max cos(theta)
-    "ymax": 20,             # optional y-limit (percent). None -> auto
+    "ymax": 30,             # optional y-limit (percent). None -> auto
     "ylabel": r"Material budget [$\%\;X_0$]",
     "xlabel": r"$\cos\theta$",
     "legend_title": "Layers",
     "legend_ncol": 1,
     "legend_bbox": (0.5, 0.90),  # (x,y) in axes fraction
-    "ignore_labels_containing": ["MAG"],  # case-insensitive substrings to ignore
+    "ignore_labels_containing": ["MAG", "ARC", "ECAL"],  # case-insensitive substrings to ignore
     "percent_ticks": True,     # show % in tick labels
     "dpi": 200,
 }
@@ -128,20 +143,20 @@ plt.rcParams.update({
 # === Scan grids (edit here) =================================
 # ============================================================
 
-# theta values used in the plots vs p (fixed list)
-THETA_SET_FOR_PSCAN = [45.0, 60.0, 90.0]  # deg
-# THETA_SET_FOR_PSCAN = [90.0]  # deg
+# theta values used in the plots vs pT (fixed list)
+THETA_SET_FOR_PSCAN = [15.0, 45.0, 90.0]  # deg
+#THETA_SET_FOR_PSCAN = [90.0]  # deg
 
-# p scan (for plots vs p): range + number of bins (spacing auto from PLOT_CFG[*].logx_p)
-P_RANGE_PSCAN  = (1.0, 100.0)   # GeV
-P_NBINS_PSCAN  = 20
+# pT scan (for plots vs pT): range + number of bins (spacing auto from PLOT_CFG[*].logx_p)
+PT_RANGE_PSCAN  = (1.0, 100.0)   # GeV
+PT_NBINS_PSCAN  = 396
 
 # theta scan (for plots vs theta): range + number of bins (spacing auto from PLOT_CFG[*].logx_t; default linear)
 THETA_RANGE_TSCAN = (10.0, 90.0)  # deg
-THETA_NBINS_TSCAN = 16
+THETA_NBINS_TSCAN = 320
 
-# p values used IN theta-scan (for plots vs theta): explicit list
-P_LIST_TSCAN = [1.0, 10.0, 100]   # GeV
+# pT values used IN theta-scan (for plots vs theta): explicit list
+PT_LIST_TSCAN = [1.0, 10.0, 100]   # GeV
 
 PARAMS = ["Pt", "D", "Z0", "Theta", "Phi"]  # custom order
 LINESTYLES = ["-", "--", "-.", ":"]  # cycles for multiple detectors
@@ -155,9 +170,9 @@ TAB10 = plt.get_cmap("tab10").colors
 COLOR_BY_THETA = {th: TAB10[i % len(TAB10)]
                   for i, th in enumerate(sorted(THETA_SET_FOR_PSCAN))}
 
-# fixed color per p value (used in vs-theta plots)
+# fixed color per pT value (used in vs-theta plots)
 COLOR_BY_PVAL  = {pv: TAB10[i % len(TAB10)]
-                  for i, pv in enumerate(sorted(P_LIST_TSCAN))}
+                  for i, pv in enumerate(sorted(PT_LIST_TSCAN))}
 
 # ============================================================
 # === ROOT utilities =========================================
@@ -280,15 +295,15 @@ def collect_hist_samples_for_detector(
 # === Grid builders ==========================================
 # ============================================================
 
-def build_p_grid():
-    pmin,pmax = P_RANGE_PSCAN
-    nbins     = P_NBINS_PSCAN
+def build_pt_grid():
+    ptmin,ptmax = PT_RANGE_PSCAN
+    nbins       = PT_NBINS_PSCAN
     if any(PLOT_CFG[k].get("logx_p",False) for k in PARAMS):
-        if pmin<=0 or pmax<=0: raise ValueError("logx_p requested but pmin/pmax <= 0")
-        grid=list(np.logspace(np.log10(pmin),np.log10(pmax),nbins)); mode="log"
+        if ptmin<=0 or ptmax<=0: raise ValueError("logx_p requested but ptmin/ptmax <= 0")
+        grid=list(np.logspace(np.log10(ptmin),np.log10(ptmax),nbins)); mode="log"
     else:
-        grid=list(np.linspace(pmin,pmax,nbins)); mode="linear"
-    print(f"p-grid: {mode}-spaced {nbins} pts in [{pmin},{pmax}] GeV")
+        grid=list(np.linspace(ptmin,ptmax,nbins)); mode="linear"
+    print(f"pT-grid: {mode}-spaced {nbins} pts in [{ptmin},{ptmax}] GeV")
     return grid
 
 def build_theta_grid():
@@ -302,45 +317,57 @@ def build_theta_grid():
     print(f"theta-grid: {mode}-spaced {nbins} pts in [{tmin},{tmax}] deg")
     return grid
 
-def get_p_for_tscan():
-    vals = list(P_LIST_TSCAN)
-    print(f"p (for theta-scan): explicit list with {len(vals)} values -> {vals}")
+def get_pt_for_tscan():
+    vals = list(PT_LIST_TSCAN)
+    print(f"pT (for theta-scan): explicit list with {len(vals)} values -> {vals}")
     return vals
 
 # ============================================================
 # === Parallel scans (per detector) ==========================
 # ============================================================
 
-def parallel_scan_vs_p_for_detector(p_grid, thetas, geom, npoints, minmeas, doKalman, doRes, doMS, workers, verbose):
-    results={p:{th:[np.nan]*len(p_grid) for th in thetas} for p in PARAMS}
-    tasks=[(ith,ip,th,p) for ith,th in enumerate(thetas) for ip,p in enumerate(p_grid)]
+def parallel_scan_vs_p_for_detector(pt_grid, thetas, geom, npoints, minmeas, doKalman, doRes, doMS, workers, verbose):
+    """Scan over pT values (pt_grid) at fixed theta angles. For each (pT, theta) point,
+    the total momentum p = pT / sin(theta) is passed to eval_point."""
+    results={p:{th:[np.nan]*len(pt_grid) for th in thetas} for p in PARAMS}
+    tasks=[(ith,ipt,th,pt) for ith,th in enumerate(thetas) for ipt,pt in enumerate(pt_grid)]
     total=len(tasks); done=0
-    print(f"  [p-scan] {total} points | {workers} threads")
+    print(f"  [pT-scan] {total} points | {workers} threads")
     with cf.ThreadPoolExecutor(max_workers=workers) as ex:
-        futs={ex.submit(eval_point,p,th,geom,npoints,minmeas,doKalman,doRes,doMS,verbose):(ith,ip,th,p)
-              for ith,ip,th,p in tasks}
+        def _submit(ith, ipt, th, pt):
+            sinth = math.sin(math.radians(th))
+            p_mag = pt / max(sinth, 1e-12)
+            return ex.submit(eval_point, p_mag, th, geom, npoints, minmeas, doKalman, doRes, doMS, verbose)
+        futs={_submit(ith,ipt,th,pt):(ith,ipt,th,pt)
+              for ith,ipt,th,pt in tasks}
         step=max(1,total//20)
         for fut in cf.as_completed(futs):
-            ith,ip,th,p=futs[fut]; vals=fut.result()
-            for param in PARAMS: results[param][th][ip]=vals[param]
+            ith,ipt,th,pt=futs[fut]; vals=fut.result()
+            for param in PARAMS: results[param][th][ipt]=vals[param]
             with progress_lock:
                 done+=1
                 if done%step==0 or done==total:
                     print(f"    progress: {done}/{total} ({100*done/total:.1f}%)")
     return results
 
-def parallel_scan_vs_theta_for_detector(theta_grid, ps, geom, npoints, minmeas, doKalman, doRes, doMS, workers, verbose):
-    results={p:{pv:[np.nan]*len(theta_grid) for pv in ps} for p in PARAMS}
-    tasks=[(ip,it,pv,th) for ip,pv in enumerate(ps) for it,th in enumerate(theta_grid)]
+def parallel_scan_vs_theta_for_detector(theta_grid, pts, geom, npoints, minmeas, doKalman, doRes, doMS, workers, verbose):
+    """Scan over theta values at fixed pT values (pts). For each (pT, theta) point,
+    the total momentum p = pT / sin(theta) is passed to eval_point."""
+    results={p:{ptv:[np.nan]*len(theta_grid) for ptv in pts} for p in PARAMS}
+    tasks=[(ipt,it,ptv,th) for ipt,ptv in enumerate(pts) for it,th in enumerate(theta_grid)]
     total=len(tasks); done=0
     print(f"  [theta-scan] {total} points | {workers} threads")
     with cf.ThreadPoolExecutor(max_workers=workers) as ex:
-        futs={ex.submit(eval_point,pv,th,geom,npoints,minmeas,doKalman,doRes,doMS,verbose):(ip,it,pv,th)
-              for ip,it,pv,th in tasks}
+        def _submit(ipt, it, ptv, th):
+            sinth = math.sin(math.radians(th))
+            p_mag = ptv / max(sinth, 1e-12)
+            return ex.submit(eval_point, p_mag, th, geom, npoints, minmeas, doKalman, doRes, doMS, verbose)
+        futs={_submit(ipt,it,ptv,th):(ipt,it,ptv,th)
+              for ipt,it,ptv,th in tasks}
         step=max(1,total//20)
         for fut in cf.as_completed(futs):
-            ip,it,pv,th=futs[fut]; vals=fut.result()
-            for param in PARAMS: results[param][pv][it]=vals[param]
+            ipt,it,ptv,th=futs[fut]; vals=fut.result()
+            for param in PARAMS: results[param][ptv][it]=vals[param]
             with progress_lock:
                 done+=1
                 if done%step==0 or done==total:
@@ -439,7 +466,17 @@ def validate_layers_geo(layers: List[LayerGeo]) -> int:
     print(f"[geom] validation: {issues} issue(s)")
     return issues
 
+_GEO_SPECIAL_COLORS = {
+    "mag":  ("#7f7f7f", 0.45),   # magnet  → gray
+    "ecal": ("#d62728", 0.50),   # ECAL    → red
+    "arc":  ("#2ca02c", 0.50),   # ARC     → green
+}
+
 def _style_for_layer_geo(L: LayerGeo) -> Tuple[str, float]:
+    label_low = L.label.lower()
+    for key, (face, alpha) in _GEO_SPECIAL_COLORS.items():
+        if key in label_low:
+            return face, alpha
     active = (L.meas_frac > 0.0)
     twoD   = (L.nmeas == 2)
     if active:
@@ -455,22 +492,30 @@ def _style_for_layer_geo(L: LayerGeo) -> Tuple[str, float]:
         alpha = 0.75 if twoD else 0.35
     return face, alpha
 
-def plot_rz_geometry(layers: List[LayerGeo], title: str, out_pdf: str):
+def plot_rz_geometry(layers: List[LayerGeo], title: str, out_pdf: str, cfg: dict = None):
+    if cfg is None:
+        cfg = GEO_CFG
     fig, ax = plt.subplots(figsize=(10, 6))
     r_min, r_max = math.inf, -math.inf
     z_min, z_max = math.inf, -math.inf
+    subsys_boxes: Dict[str, dict] = {}  # key -> {zlo,zhi,rlo,rhi}
     for L in layers:
         color, alpha = _style_for_layer_geo(L)
         is_pipe = ("pipe" in L.label.lower())
         if L.ltype == 1:
             z0, z1 = sorted([L.min_loc, L.max_loc])
-            r0, r1 = L.r_or_z, L.r_or_z + L.thickness
+            r0, r1 = L.r_or_z - 0.5*L.thickness, L.r_or_z + 0.5*L.thickness
             rect = Rectangle((z0, r0), z1 - z0, r1 - r0,
                              facecolor=color, edgecolor="k", linewidth=0.7, alpha=alpha)
             ax.add_patch(rect)
             if not is_pipe:
                 r_min = min(r_min, r0); r_max = max(r_max, r1)
                 z_min = min(z_min, z0); z_max = max(z_max, z1)
+            for key in _GEO_SPECIAL_COLORS:
+                if key in L.label.lower():
+                    b = subsys_boxes.setdefault(key, {"zlo": math.inf, "zhi": -math.inf, "rlo_bar": math.inf, "rhi_bar": -math.inf})
+                    b["zlo"] = min(b["zlo"], z0); b["zhi"] = max(b["zhi"], z1)
+                    b["rlo_bar"] = min(b["rlo_bar"], r0); b["rhi_bar"] = max(b["rhi_bar"], r1)
         elif L.ltype == 2:
             R0, R1 = sorted([L.min_loc, L.max_loc])
             zc = L.r_or_z
@@ -481,15 +526,62 @@ def plot_rz_geometry(layers: List[LayerGeo], title: str, out_pdf: str):
             if not is_pipe:
                 r_min = min(r_min, R0); r_max = max(r_max, R1)
                 z_min = min(z_min, z0); z_max = max(z_max, z1)
+            for key in _GEO_SPECIAL_COLORS:
+                if key in L.label.lower():
+                    b = subsys_boxes.setdefault(key, {"zlo": math.inf, "zhi": -math.inf, "rlo_bar": math.inf, "rhi_bar": -math.inf})
+                    b["zlo"] = min(b["zlo"], z0); b["zhi"] = max(b["zhi"], z1)
     ax.set_xlabel(r"$z$ [m]"); ax.set_ylabel(r"$r$ [m]"); ax.set_title(title)
     ax.grid(True, linestyle="--", alpha=0.5)
     if not math.isinf(r_min):
         dr = 0.02*(r_max - r_min) if (r_max > r_min) else 0.01
         dz = 0.02*(z_max - z_min) if (z_max > z_min) else 0.01
-        ax.set_xlim(z_min - dz, z_max + dz)
-        ax.set_ylim(max(0, r_min - dr), r_max + dr)
-    fig.tight_layout(); fig.savefig(out_pdf, dpi=MAT_CFG["dpi"]); plt.close(fig)
-    print(f"[geom] saved {out_pdf}")
+        xlo = z_min - dz; xhi = z_max + dz
+        ylo = max(0, r_min - dr); yhi = r_max + dr
+        if cfg["zmax"] is not None:
+            xlo, xhi = -cfg["zmax"], cfg["zmax"]
+        if cfg["rmax"] is not None:
+            yhi = cfg["rmax"]
+        ax.set_xlim(xlo, xhi)
+        ax.set_ylim(ylo, yhi)
+        # --- subsystem labels ---
+        for key, b in subsys_boxes.items():
+            face_hex, _ = _GEO_SPECIAL_COLORS[key]
+            dark = tuple(c * 0.55 for c in mcolors.to_rgb(face_hex))
+            zc = -0.5  # fixed offset from centre, within barrel volumes
+            rc = 0.5 * (b["rlo_bar"] + b["rhi_bar"])
+            # only label if position is within the current view
+            if xlo <= zc <= xhi and ylo <= rc <= yhi:
+                ax.text(zc, rc, key.upper(),
+                        color=dark, fontsize=11, fontweight="bold",
+                        ha="center", va="center", clip_on=True)
+        # --- theta reference lines ---
+        for th_deg in [10, 25, 45, 60, 90]:
+            th_rad = math.radians(th_deg)
+            if abs(th_deg - 90) < 1e-9:
+                ax.axvline(x=0, color="lightgrey", linestyle="--", lw=1.0, zorder=0)
+                ax.text(0, 0.97 * yhi, r"$90^\circ$",
+                        color="darkgrey", fontsize=9, ha="right", va="top",
+                        rotation=90, clip_on=True)
+            elif xhi > 0:
+                slope = math.tan(th_rad)
+                r_at_xhi = slope * xhi
+                if r_at_xhi <= yhi:
+                    z_end, r_end = xhi, r_at_xhi
+                else:
+                    z_end, r_end = yhi / slope, yhi
+                ax.plot([0, z_end], [0, r_end],
+                        color="lightgrey", linestyle="--", lw=1.0, zorder=0)
+                lz, lr = 0.90 * z_end, 0.90 * r_end
+                ax.text(lz, lr, rf"${th_deg}^\circ$",
+                        color="darkgrey", fontsize=9, ha="center", va="center",
+                        clip_on=True,
+                        bbox=dict(facecolor="white", alpha=0.6, edgecolor="none", pad=1))
+    fig.tight_layout()
+    fig.savefig(out_pdf, dpi=MAT_CFG["dpi"])
+    png = out_pdf.replace(".pdf", ".png")
+    fig.savefig(png, dpi=MAT_CFG["dpi"])
+    plt.close(fig)
+    print(f"[geom] saved {out_pdf} and {png}")
 
 # ============================================================
 # === Material budget (%/X0) =================================
@@ -537,7 +629,7 @@ def _path_len_barrel(L: LayerMat, costh: float, sinth: float) -> float:
     if sinth <= 0.0: return 0.0
     R = L.r_or_z; dR = max(0.0, L.thickness)
     z0, z1 = sorted([L.min_loc, L.max_loc])
-    t_r = (R/sinth, (R+dR)/sinth)
+    t_r = ((R - 0.5*dR)/sinth, (R + 0.5*dR)/sinth)
     if costh == 0.0:
         return (t_r[1]-t_r[0]) if (z0 <= 0.0 <= z1) else 0.0
     t_z_edges = (z0/costh, z1/costh); t_z = (min(t_z_edges), max(t_z_edges))
@@ -642,8 +734,8 @@ def plot_material_budget(geom_path: str, out_pdf: str):
 def _save_both(figpath_png: Path):
     png = str(figpath_png)
     pdf = str(figpath_png.with_suffix(".pdf"))
-    plt.savefig(png, dpi=200)
-    plt.savefig(pdf)
+    plt.savefig(png, dpi=200, bbox_inches="tight")
+    plt.savefig(pdf, bbox_inches="tight")
     print(f"[plot] saved {png} and {pdf}")
 
 
@@ -704,7 +796,9 @@ def make_plot_vs_p_multi(param, p_grid, curves_list, labels, bfields, outdir):
     if cfg["logy"]:   ax_main.set_yscale("log")
     ax_main.set_ylim(cfg["ymin"], cfg["ymax"])
     ax_main.grid(True, which="both", alpha=0.3)
-    ax_main.legend(ncol=2 if multi else 1)
+    n_det = len(curves_list)
+    ax_main.legend(loc="lower center", bbox_to_anchor=(0.5, 1.01),
+                   ncol=n_det if multi else 1, borderaxespad=0, frameon=True)
     fig.tight_layout()
     _save_both(Path(outdir) / f"{param}_vs_p_by_theta.png")
     plt.close(fig)
@@ -731,7 +825,7 @@ def make_plot_vs_theta_multi(param, theta_grid, curves_list, labels, bfields, ou
             ax_main.plot(
                 theta_grid, curves[pval],
                 linestyle=ls, lw=1.8, color=color,
-                label=fr"{lab_prefix}, $p={pval:.0f}\,\mathrm{{GeV}}$"
+                label=fr"{lab_prefix}, $p_T={pval:.0f}\,\mathrm{{GeV}}$"
             )
 
     # ratio panel: config[i] / config[0] for i >= 1
@@ -762,7 +856,9 @@ def make_plot_vs_theta_multi(param, theta_grid, curves_list, labels, bfields, ou
     if cfg["logy"]:   ax_main.set_yscale("log")
     ax_main.set_ylim(cfg["ymin"], cfg["ymax"])
     ax_main.grid(True, which="both", alpha=0.3)
-    ax_main.legend(ncol=2 if multi else 1)
+    n_det = len(curves_list)
+    ax_main.legend(loc="lower center", bbox_to_anchor=(0.5, 1.01),
+                   ncol=n_det if multi else 1, borderaxespad=0, frameon=True)
     fig.tight_layout()
     _save_both(Path(outdir) / f"{param}_vs_theta_by_p.png")
     plt.close(fig)
@@ -989,6 +1085,13 @@ def write_beamer_report(outdir: Path, cards: List[str], bfields: List[float], la
             f.write(r"\centering\vfill" "\n")
             f.write(rf"\includegraphics[width=0.98\paperwidth,height=0.86\textheight,keepaspectratio]{{\detokenize{{{fig}}}}}" "\n")
             f.write(r"\vfill\end{frame}" "\n")
+            # zoomed vertex slide (single card)
+            fig_vtx = os.path.join(".", f"{base}_geom_vtx.pdf")
+            f.write(r"\begin{frame}[plain]" "\n")
+            f.write(r"\frametitle{Geometry (r--z) — vertex region}" "\n")
+            f.write(r"\centering\vfill" "\n")
+            f.write(rf"\includegraphics[width=0.98\paperwidth,height=0.86\textheight,keepaspectratio]{{\detokenize{{{fig_vtx}}}}}" "\n")
+            f.write(r"\vfill\end{frame}" "\n")
         else:
             for i in range(0, len(cards), 2):
                 pair_cards  = cards[i:i+2]
@@ -1001,6 +1104,23 @@ def write_beamer_report(outdir: Path, cards: List[str], bfields: List[float], la
                 for c in pair_cards:
                     base = os.path.splitext(os.path.basename(c))[0]
                     fig  = f"{base}_geom.pdf"
+                    f.write(r"\begin{column}{0.42\paperwidth}\centering" "\n")
+                    f.write(rf"\includegraphics[width=\linewidth,height=0.86\textheight,keepaspectratio]{{\detokenize{{{fig}}}}}" "\n")
+                    f.write(r"\end{column}" "\n")
+                f.write(r"\end{columns}" "\n")
+                f.write(r"\vfill\end{frame}" "\n")
+            # zoomed vertex slides (multi-card, same 2-per-slide layout)
+            for i in range(0, len(cards), 2):
+                pair_cards  = cards[i:i+2]
+                pair_labels = labels[i:i+2]
+                title = "Geometry (r--z) vertex region: " + " \\& ".join(esc_text(L) for L in pair_labels)
+                f.write(r"\begin{frame}[plain]" "\n")
+                f.write(rf"\frametitle{{{title}}}" "\n")
+                f.write(r"\centering\vfill" "\n")
+                f.write(r"\begin{columns}[T,totalwidth=0.9\paperwidth]" "\n")
+                for c in pair_cards:
+                    base = os.path.splitext(os.path.basename(c))[0]
+                    fig  = f"{base}_geom_vtx.pdf"
                     f.write(r"\begin{column}{0.42\paperwidth}\centering" "\n")
                     f.write(rf"\includegraphics[width=\linewidth,height=0.86\textheight,keepaspectratio]{{\detokenize{{{fig}}}}}" "\n")
                     f.write(r"\end{column}" "\n")
@@ -1114,7 +1234,7 @@ def main():
                     help="Magnetic field [T] per card (repeatable). Defaults to --bfield-default for missing entries.")
     ap.add_argument("--label", action="append",
                     help="Legend label per card (repeatable). Defaults to basename(card).")
-    ap.add_argument("--bfield-default", type=float, default=2.0, help="Default B for cards without an explicit --bfield")
+    ap.add_argument("--bfield-default", type=float, default=3.0, help="Default B for cards without an explicit --bfield")
 
     ap.add_argument("--doKalman", action="append", type=_to_bool,
                 help="(repeatable) Enable Kalman filter *for this card* (default: --doKalman-default)")
@@ -1123,7 +1243,7 @@ def main():
     ap.add_argument("--doMS",    action="append", type=_to_bool,
                     help="(repeatable) Enable multiple-scattering term *for this card* (default: --doMS-default)")
 
-    ap.add_argument("--doKalman-default", type=_to_bool, default=True,
+    ap.add_argument("--doKalman-default", type=_to_bool, default=False,
                     help="Default doKalman for cards without explicit --doKalman")
     ap.add_argument("--doRes-default", type=_to_bool, default=True,
                     help="Default doRes for cards without explicit --doRes")
@@ -1194,9 +1314,9 @@ def main():
 
 
     # Build grids for scans
-    p_grid      = build_p_grid()
-    theta_grid  = build_theta_grid()
-    p_for_tscan = get_p_for_tscan()
+    pt_grid      = build_pt_grid()
+    theta_grid   = build_theta_grid()
+    pt_for_tscan = get_pt_for_tscan()
 
     # Accumulate scan results across detectors
     res_vs_p_all = []
@@ -1232,18 +1352,21 @@ def main():
         geom_pdf_path = Path(outdir) / f"{base}_geom.pdf"
         plot_rz_geometry(layers_geo, title=f"{lab} (r–z view)", out_pdf=str(geom_pdf_path))
 
+        geom_vtx_pdf_path = Path(outdir) / f"{base}_geom_vtx.pdf"
+        plot_rz_geometry(layers_geo, title=f"{lab} (vertex region)", out_pdf=str(geom_vtx_pdf_path), cfg=GEO_VTX_CFG)
+
         # Material budget plot (%/X0)
         mat_pdf_path = Path(outdir) / f"{base}_mat.pdf"
         plot_material_budget(card, str(mat_pdf_path))
 
-        print("Scanning vs p ...")
+        print("Scanning vs pT ...")
         res_p = parallel_scan_vs_p_for_detector(
-            p_grid, THETA_SET_FOR_PSCAN, G,
+            pt_grid, THETA_SET_FOR_PSCAN, G,
             args.npoints, args.minmeas, dKalman, dRes, dMS, args.workers, args.verbose_points
         )
         print("Scanning vs theta ...")
         res_t = parallel_scan_vs_theta_for_detector(
-            theta_grid, p_for_tscan, G,
+            theta_grid, pt_for_tscan, G,
             args.npoints, args.minmeas, dKalman, dRes, dMS, args.workers, args.verbose_points
         )
         res_vs_p_all.append(res_p)
@@ -1269,7 +1392,7 @@ def main():
     # 4) Overlay plots (resolution)
     for param in PARAMS:
         make_plot_vs_p_multi(
-            param, p_grid,
+            param, pt_grid,
             [det_res[param] for det_res in res_vs_p_all],
             labels, bfields, str(outdir)
         )
