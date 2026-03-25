@@ -43,10 +43,10 @@ The second export is needed to produce the LaTeX report.
 
 ```bash
 python3 perf_multi.py \
-  --card Geometries/GeoIDEA_NewDCH.txt --label IDEA --bfield 2.0 --doKalman false --doMS true --doRes true \
-  --card Geometries/GeoCLD.txt --label CLD --bfield 2.0 --doKalman false --doMS true --doRes true \
+  --card Geometries/GeoIDEA_NewDCH.txt --label IDEA --bfield 2.0 --doKalman true --doMS true --doRes true \
+  --card Geometries/GeoCLD.txt --label CLD --bfield 2.0 --doKalman true --doMS true --doRes true \
   --inc examples/classes --compile --workers 60 --latex --npoints 100 \
-  --outdir /eos/user/s/selvaggi/www/maps
+  --outdir .
 ```
 
 When using the `--latex` flag, a beamer PDF report like [this one](https://mselvaggi.web.cern.ch/maps/report_idea-MSon-ResOn-KalmanOff-2T_cld-MSon-ResOn-KalmanOff-2T/report_idea-MSon-ResOn-KalmanOff-2T_cld-MSon-ResOn-KalmanOff-2T.pdf) will be produced.
