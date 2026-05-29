@@ -837,21 +837,21 @@ def _save_both(figpath_png: Path):
 
 _RATIO_FIG_SIZE   = (8.2, 7.0)
 _RATIO_HEIGHT_KW  = {"height_ratios": [3, 1], "hspace": 0.06}
-_SINGLE_FIG_SIZE  = (8.2, 5.8)
+# _SINGLE_FIG_SIZE  = (8.2, 5.8)
+_SINGLE_FIG_SIZE  = (8.2, 7.0)
 
 
 def make_plot_vs_pt_multi(param, pt_grid, curves_list, labels, bfields, outdir):
     cfg = PLOT_CFG[param]
     multi = len(curves_list) > 1
 
-    if multi:
-        fig, (ax_main, ax_rat) = plt.subplots(
-            2, 1, figsize=_RATIO_FIG_SIZE, sharex=True,
-            gridspec_kw=_RATIO_HEIGHT_KW,
-        )
-    else:
-        fig, ax_main = plt.subplots(figsize=_SINGLE_FIG_SIZE)
-        ax_rat = None
+    fig, (ax_main, ax_rat) = plt.subplots(
+        2, 1, figsize=_RATIO_FIG_SIZE, sharex=True,
+        gridspec_kw=_RATIO_HEIGHT_KW,
+    )
+
+    if not multi:
+        ax_rat.axis('off')
 
     for idx, curves in enumerate(curves_list):
         ls = LINESTYLES[idx % len(LINESTYLES)]
@@ -888,6 +888,7 @@ def make_plot_vs_pt_multi(param, pt_grid, curves_list, labels, bfields, outdir):
     ax_main.set_ylabel(cfg["ylabel"])
     if not multi:
         ax_main.set_xlabel(cfg["xlabel_pt"])
+        ax_main.tick_params(axis='x', labelbottom=True)
     if cfg["logx_pt"]: ax_main.set_xscale("log")
     if cfg["logy"]:   ax_main.set_yscale("log")
     ax_main.set_ylim(cfg["ymin"], cfg["ymax"])
@@ -904,14 +905,13 @@ def make_plot_vs_p_mag_multi(param, p_mag_grid, curves_list, labels, bfields, ou
     cfg = PLOT_CFG[param]
     multi = len(curves_list) > 1
 
-    if multi:
-        fig, (ax_main, ax_rat) = plt.subplots(
-            2, 1, figsize=_RATIO_FIG_SIZE, sharex=True,
-            gridspec_kw=_RATIO_HEIGHT_KW,
-        )
-    else:
-        fig, ax_main = plt.subplots(figsize=_SINGLE_FIG_SIZE)
-        ax_rat = None
+    fig, (ax_main, ax_rat) = plt.subplots(
+        2, 1, figsize=_RATIO_FIG_SIZE, sharex=True,
+        gridspec_kw=_RATIO_HEIGHT_KW,
+    )
+
+    if not multi:
+        ax_rat.axis('off')
 
     for idx, curves in enumerate(curves_list):
         ls = LINESTYLES[idx % len(LINESTYLES)]
@@ -948,6 +948,7 @@ def make_plot_vs_p_mag_multi(param, p_mag_grid, curves_list, labels, bfields, ou
     ax_main.set_ylabel(cfg["ylabel"])
     if not multi:
         ax_main.set_xlabel(cfg["xlabel_p_mag"])
+        ax_main.tick_params(axis='x', labelbottom=True)
     if cfg["logx_p_mag"]: ax_main.set_xscale("log")
     if cfg["logy"]:   ax_main.set_yscale("log")
     ax_main.set_ylim(cfg["ymin"], cfg["ymax"])
@@ -964,14 +965,13 @@ def make_plot_vs_theta_by_pt_multi(param, theta_grid, curves_list, labels, bfiel
     cfg = PLOT_CFG[param]
     multi = len(curves_list) > 1
 
-    if multi:
-        fig, (ax_main, ax_rat) = plt.subplots(
-            2, 1, figsize=_RATIO_FIG_SIZE, sharex=True,
-            gridspec_kw=_RATIO_HEIGHT_KW,
-        )
-    else:
-        fig, ax_main = plt.subplots(figsize=_SINGLE_FIG_SIZE)
-        ax_rat = None
+    fig, (ax_main, ax_rat) = plt.subplots(
+        2, 1, figsize=_RATIO_FIG_SIZE, sharex=True,
+        gridspec_kw=_RATIO_HEIGHT_KW,
+    )
+
+    if not multi:
+        ax_rat.axis('off')
 
     for idx, curves in enumerate(curves_list):
         ls = LINESTYLES[idx % len(LINESTYLES)]
@@ -1008,6 +1008,7 @@ def make_plot_vs_theta_by_pt_multi(param, theta_grid, curves_list, labels, bfiel
     ax_main.set_ylabel(cfg["ylabel"])
     if not multi:
         ax_main.set_xlabel(cfg["xlabel_t"])
+        ax_main.tick_params(axis='x', labelbottom=True)
     if cfg["logx_t"]: ax_main.set_xscale("log")
     if cfg["logy"]:   ax_main.set_yscale("log")
     ax_main.set_ylim(cfg["ymin"], cfg["ymax"])
@@ -1023,14 +1024,13 @@ def make_plot_vs_theta_by_p_mag_multi(param, theta_grid, curves_list, labels, bf
     cfg = PLOT_CFG[param]
     multi = len(curves_list) > 1
 
-    if multi:
-        fig, (ax_main, ax_rat) = plt.subplots(
-            2, 1, figsize=_RATIO_FIG_SIZE, sharex=True,
-            gridspec_kw=_RATIO_HEIGHT_KW,
-        )
-    else:
-        fig, ax_main = plt.subplots(figsize=_SINGLE_FIG_SIZE)
-        ax_rat = None
+    fig, (ax_main, ax_rat) = plt.subplots(
+        2, 1, figsize=_RATIO_FIG_SIZE, sharex=True,
+        gridspec_kw=_RATIO_HEIGHT_KW,
+    )
+
+    if not multi:
+        ax_rat.axis('off')
 
     for idx, curves in enumerate(curves_list):
         ls = LINESTYLES[idx % len(LINESTYLES)]
@@ -1067,6 +1067,7 @@ def make_plot_vs_theta_by_p_mag_multi(param, theta_grid, curves_list, labels, bf
     ax_main.set_ylabel(cfg["ylabel"])
     if not multi:
         ax_main.set_xlabel(cfg["xlabel_t"])
+        ax_main.tick_params(axis='x', labelbottom=True)
     if cfg["logx_t"]: ax_main.set_xscale("log")
     if cfg["logy"]:   ax_main.set_yscale("log")
     ax_main.set_ylim(cfg["ymin"], cfg["ymax"])
@@ -1074,6 +1075,7 @@ def make_plot_vs_theta_by_p_mag_multi(param, theta_grid, curves_list, labels, bf
     n_det = len(curves_list)
     ax_main.legend(loc="lower center", bbox_to_anchor=(0.5, 1.01),
                    ncol=n_det if multi else 1, borderaxespad=0, frameon=True)
+        
     fig.tight_layout()
     _save_both(Path(outdir) / f"{param}_vs_theta_by_p_mag.png")
     plt.close(fig)
