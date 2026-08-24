@@ -21,77 +21,98 @@ from matplotlib.ticker import FuncFormatter  # for % ticks
 PLOT_CFG = {
     "Pt": {
         "ylabel": r"$\sigma(p_T)/p_T$",
-        "xlabel_p": r"$p_T$ [GeV]",
+        "xlabel_pt": r"$p_T$ [GeV]",
+        "xlabel_p_mag": r"$p$ [GeV]",
         "xlabel_t": r"$\theta$ [deg]",
         "ymin": 0e-3,
-        "ymax": 1e-2,
-        "logx_p": True,
+        # "ymax": 3e-2,
+        "ymax": 2e-1,
+        "logx_pt": True,
+        "logx_p_mag": True,
         "logx_t": False,
-        "logy": False,
-        "ratio_ymin_p": 0.0,
-        "ratio_ymax_p": 2.0,
-        "ratio_ymin_t": 0.0,
-        "ratio_ymax_t": 2.0,
+        "logy": True,
+        "ratio_ymin_pt": 0.5,
+        "ratio_ymax_pt": 1.5,
+        "ratio_ymin_p_mag": 0.7,
+        "ratio_ymax_p_mag": 1.1,
+        "ratio_ymin_t": 0.5,
+        "ratio_ymax_t": 1.5,
     },
 
     "D": {
         "ylabel": r"$\sigma(d_0)$ [$\mu$m]",
-        "xlabel_p": r"$p_T$ [GeV]",
+        "xlabel_pt": r"$p_T$ [GeV]",
+        "xlabel_p_mag": r"$p$ [GeV]",
         "xlabel_t": r"$\theta$ [deg]",
         "ymin": 1,
-        "ymax": 200.0,
-        "logx_p": False,
+        "ymax": 400.0,
+        "logx_pt": False,
+        "logx_p_mag": False,
         "logx_t": False,
         "logy": True,
-        "ratio_ymin_p": 0.8,
-        "ratio_ymax_p": 1.5,
-        "ratio_ymin_t": 0.8,
+        "ratio_ymin_pt": 0.5,
+        "ratio_ymax_pt": 1.5,
+        "ratio_ymin_p_mag": 0.7,
+        "ratio_ymax_p_mag": 1.1,
+        "ratio_ymin_t": 0.5,
         "ratio_ymax_t": 1.5,
     },
 
     "Z0": {
         "ylabel": r"$\sigma(z_0)$ [$\mu$m]",
-        "xlabel_p": r"$p_T$ [GeV]",
+        "xlabel_pt": r"$p_T$ [GeV]",
+        "xlabel_p_mag": r"$p$ [GeV]",
         "xlabel_t": r"$\theta$ [deg]",
         "ymin": 1,
-        "ymax": 200.0,
-        "logx_p": False,
+        "ymax": 2000.0,
+        "logx_pt": False,
+        "logx_p_mag": False,
         "logx_t": False,
         "logy": True,
-        "ratio_ymin_p": 0.8,
-        "ratio_ymax_p": 1.5,
-        "ratio_ymin_t": 0.8,
+        "ratio_ymin_pt": 0.5,
+        "ratio_ymax_pt": 1.5,
+        "ratio_ymin_p_mag": 0.7,
+        "ratio_ymax_p_mag": 1.1,
+        "ratio_ymin_t": 0.5,
         "ratio_ymax_t": 1.5,
     },
 
-        "Theta": {
+    "Theta": {
         "ylabel": r"$\sigma(\theta)$",
-        "xlabel_p": r"$p_T$ [GeV]",
+        "xlabel_pt": r"$p_T$ [GeV]",
+        "xlabel_p_mag": r"$p$ [GeV]",
         "xlabel_t": r"$\theta$ [deg]",
         "ymin": 1e-6,
-        "ymax": 2e-3,
-        "logx_p": False,
+        "ymax": 3e-3,
+        "logx_pt": False,
+        "logx_p_mag": False,
         "logx_t": False,
         "logy": True,
-        "ratio_ymin_p": 1.0,
-        "ratio_ymax_p": 2.0,
-        "ratio_ymin_t": 1.0,
-        "ratio_ymax_t": 2.0,
+        "ratio_ymin_pt": 0.5,
+        "ratio_ymax_pt": 1.5,
+        "ratio_ymin_p_mag": 0.5,
+        "ratio_ymax_p_mag": 1.5,
+        "ratio_ymin_t": 0.5,
+        "ratio_ymax_t": 1.5,
     },
 
     "Phi": {
         "ylabel": r"$\sigma(\varphi_0)$",
-        "xlabel_p": r"$p_T$ [GeV]",
+        "xlabel_pt": r"$p_T$ [GeV]",
+        "xlabel_p_mag": r"$p$ [GeV]",
         "xlabel_t": r"$\theta$ [deg]",
-        "ymin": 1e-5,
-        "ymax": 1e-2,
-        "logx_p": False,
+        "ymin": 5e-6,
+        "ymax": 3e-2,
+        "logx_pt": False,
+        "logx_p_mag": False,
         "logx_t": False,
         "logy": True,
-        "ratio_ymin_p": 1.0,
-        "ratio_ymax_p": 2.0,
-        "ratio_ymin_t": 1.0,
-        "ratio_ymax_t": 2.0,
+        "ratio_ymin_pt": 0.5,
+        "ratio_ymax_pt": 1.5,
+        "ratio_ymin_p_mag": 0.5,
+        "ratio_ymax_p_mag": 1.5,
+        "ratio_ymin_t": 0.5,
+        "ratio_ymax_t": 1.5,
     },
 
 }
@@ -144,12 +165,19 @@ plt.rcParams.update({
 # ============================================================
 
 # theta values used in the plots vs pT (fixed list)
-THETA_SET_FOR_PSCAN = [15.0, 45.0, 90.0]  # deg
-#THETA_SET_FOR_PSCAN = [90.0]  # deg
+THETA_SET_FOR_PTSCAN = [15.0, 45.0, 90.0]  # deg
+# THETA_SET_FOR_PTSCAN = [90.0]  # deg
 
-# pT scan (for plots vs pT): range + number of bins (spacing auto from PLOT_CFG[*].logx_p)
-PT_RANGE_PSCAN  = (1.0, 100.0)   # GeV
-PT_NBINS_PSCAN  = 396
+# theta values used in the plots vs |p| (fixed list)
+THETA_SET_FOR_PSCAN = [15.0, 45.0, 90.0]  # deg
+
+# pT scan (for plots vs pT): range + number of bins (spacing auto from PLOT_CFG[*].logx_pt)
+PT_RANGE_PTSCAN  = (0.1, 100.0)   # GeV
+PT_NBINS_PTSCAN  = 396
+
+# |p| scan (for plots vs |p|): range + number of bins (spacing auto from PLOT_CFG[*].logx_p_mag)
+P_RANGE_PSCAN  = (0.1, 190.0)   # GeV
+P_NBINS_PSCAN  = 396
 
 # theta scan (for plots vs theta): range + number of bins (spacing auto from PLOT_CFG[*].logx_t; default linear)
 THETA_RANGE_TSCAN = (10.0, 90.0)  # deg
@@ -158,8 +186,11 @@ THETA_NBINS_TSCAN = 320
 # pT values used IN theta-scan (for plots vs theta): explicit list
 PT_LIST_TSCAN = [1.0, 10.0, 100]   # GeV
 
+# |p| values used IN theta-scan (for plots vs theta): explicit list
+P_LIST_TSCAN = [1.0, 45.6, 80.0, 120.0, 182.5]   # GeV
+
 PARAMS = ["Pt", "D", "Z0", "Theta", "Phi"]  # custom order
-LINESTYLES = ["-", "--", "-.", ":"]  # cycles for multiple detectors
+LINESTYLES = ["-", "--", "-.", ":", (0, (3, 1, 1, 1, 1, 1))]  # cycles for multiple detectors
 progress_lock = threading.Lock()
 
 
@@ -168,11 +199,15 @@ TAB10 = plt.get_cmap("tab10").colors
 
 # fixed color per theta (used in vs-p plots)
 COLOR_BY_THETA = {th: TAB10[i % len(TAB10)]
-                  for i, th in enumerate(sorted(THETA_SET_FOR_PSCAN))}
+                  for i, th in enumerate(sorted(THETA_SET_FOR_PTSCAN))}
 
 # fixed color per pT value (used in vs-theta plots)
-COLOR_BY_PVAL  = {pv: TAB10[i % len(TAB10)]
-                  for i, pv in enumerate(sorted(PT_LIST_TSCAN))}
+COLOR_BY_PTVAL  = {ptv: TAB10[i % len(TAB10)]
+                  for i, ptv in enumerate(sorted(PT_LIST_TSCAN))}
+
+# fixed color per |p| value (used in vs-theta plots)
+COLOR_BY_PVAL  = {p_magv: TAB10[i % len(TAB10)]
+                  for i, p_magv in enumerate(sorted(P_LIST_TSCAN))}
 
 # ============================================================
 # === ROOT utilities =========================================
@@ -268,7 +303,7 @@ def eval_point_samples(p_mag, theta_deg, geom, npoints, minmeas, doKalman, doRes
 
 def collect_hist_samples_for_detector(
     geom,
-    p_values: List[float],
+    p_mag_values: List[float],
     theta_values: List[float],
     npoints: int,
     minmeas: int,
@@ -278,15 +313,15 @@ def collect_hist_samples_for_detector(
     verbose: bool = False,
 ):
     samples = {
-        param: {p: {th: [] for th in theta_values} for p in p_values}
+        param: {p_mag: {th: [] for th in theta_values} for p_mag in p_mag_values}
         for param in PARAMS
     }
 
-    for p in p_values:
+    for p_mag in p_mag_values:
         for th in theta_values:
-            acc = eval_point_samples(p, th, geom, npoints, minmeas, doKalman, doRes, doMS, verbose)
+            acc = eval_point_samples(p_mag, th, geom, npoints, minmeas, doKalman, doRes, doMS, verbose)
             for param in PARAMS:
-                samples[param][p][th].extend(acc[param])
+                samples[param][p_mag][th].extend(acc[param])
 
     return samples
 
@@ -296,14 +331,25 @@ def collect_hist_samples_for_detector(
 # ============================================================
 
 def build_pt_grid():
-    ptmin,ptmax = PT_RANGE_PSCAN
-    nbins       = PT_NBINS_PSCAN
-    if any(PLOT_CFG[k].get("logx_p",False) for k in PARAMS):
-        if ptmin<=0 or ptmax<=0: raise ValueError("logx_p requested but ptmin/ptmax <= 0")
+    ptmin,ptmax = PT_RANGE_PTSCAN
+    nbins       = PT_NBINS_PTSCAN
+    if any(PLOT_CFG[k].get("logx_pt",False) for k in PARAMS):
+        if ptmin<=0 or ptmax<=0: raise ValueError("logx_pt requested but ptmin/ptmax <= 0")
         grid=list(np.logspace(np.log10(ptmin),np.log10(ptmax),nbins)); mode="log"
     else:
         grid=list(np.linspace(ptmin,ptmax,nbins)); mode="linear"
     print(f"pT-grid: {mode}-spaced {nbins} pts in [{ptmin},{ptmax}] GeV")
+    return grid
+
+def build_p_mag_grid():
+    p_mag_min,p_mag_max = P_RANGE_PSCAN
+    nbins       = P_NBINS_PSCAN
+    if any(PLOT_CFG[k].get("logx_p_mag",False) for k in PARAMS):
+        if p_mag_min<=0 or p_mag_max<=0: raise ValueError("logx_p_mag requested but p_mag_min/p_mag_max <= 0")
+        grid=list(np.logspace(np.log10(p_mag_min),np.log10(p_mag_max),nbins)); mode="log"
+    else:
+        grid=list(np.linspace(p_mag_min,p_mag_max,nbins)); mode="linear"
+    print(f"p-grid: {mode}-spaced {nbins} pts in [{p_mag_min},{p_mag_max}] GeV")
     return grid
 
 def build_theta_grid():
@@ -322,14 +368,19 @@ def get_pt_for_tscan():
     print(f"pT (for theta-scan): explicit list with {len(vals)} values -> {vals}")
     return vals
 
+def get_p_mag_for_tscan():
+    vals = list(P_LIST_TSCAN)
+    print(f"p (for theta-scan): explicit list with {len(vals)} values -> {vals}")
+    return vals
+
 # ============================================================
 # === Parallel scans (per detector) ==========================
 # ============================================================
 
-def parallel_scan_vs_p_for_detector(pt_grid, thetas, geom, npoints, minmeas, doKalman, doRes, doMS, workers, verbose):
+def parallel_scan_vs_pt_for_detector(pt_grid, thetas, geom, npoints, minmeas, doKalman, doRes, doMS, workers, verbose):
     """Scan over pT values (pt_grid) at fixed theta angles. For each (pT, theta) point,
     the total momentum p = pT / sin(theta) is passed to eval_point."""
-    results={p:{th:[np.nan]*len(pt_grid) for th in thetas} for p in PARAMS}
+    results={param:{th:[np.nan]*len(pt_grid) for th in thetas} for param in PARAMS}
     tasks=[(ith,ipt,th,pt) for ith,th in enumerate(thetas) for ipt,pt in enumerate(pt_grid)]
     total=len(tasks); done=0
     print(f"  [pT-scan] {total} points | {workers} threads")
@@ -350,10 +401,32 @@ def parallel_scan_vs_p_for_detector(pt_grid, thetas, geom, npoints, minmeas, doK
                     print(f"    progress: {done}/{total} ({100*done/total:.1f}%)")
     return results
 
-def parallel_scan_vs_theta_for_detector(theta_grid, pts, geom, npoints, minmeas, doKalman, doRes, doMS, workers, verbose):
+def parallel_scan_vs_p_mag_for_detector(p_mag_grid, thetas, geom, npoints, minmeas, doKalman, doRes, doMS, workers, verbose):
+    """Scan over |p| values (p_mag_grid) at fixed theta angles. For each (|p|, theta) point,
+    the total momentum |p| is passed to eval_point."""
+    results={param:{th:[np.nan]*len(p_mag_grid) for th in thetas} for param in PARAMS}
+    tasks=[(ith,ip_mag,th,p_mag) for ith,th in enumerate(thetas) for ip_mag,p_mag in enumerate(p_mag_grid)]
+    total=len(tasks); done=0
+    print(f"  [|p|-scan] {total} points | {workers} threads")
+    with cf.ThreadPoolExecutor(max_workers=workers) as ex:
+        def _submit(ith, ip_mag, th, p_mag):
+            return ex.submit(eval_point, p_mag, th, geom, npoints, minmeas, doKalman, doRes, doMS, verbose)
+        futs={_submit(ith,ip_mag,th,p_mag):(ith,ip_mag,th,p_mag)
+              for ith,ip_mag,th,p_mag in tasks}
+        step=max(1,total//20)
+        for fut in cf.as_completed(futs):
+            ith,ip_mag,th,p_mag=futs[fut]; vals=fut.result()
+            for param in PARAMS: results[param][th][ip_mag]=vals[param]
+            with progress_lock:
+                done+=1
+                if done%step==0 or done==total:
+                    print(f"    progress: {done}/{total} ({100*done/total:.1f}%)")
+    return results
+
+def parallel_scan_vs_theta_by_pt_for_detector(theta_grid, pts, geom, npoints, minmeas, doKalman, doRes, doMS, workers, verbose):
     """Scan over theta values at fixed pT values (pts). For each (pT, theta) point,
     the total momentum p = pT / sin(theta) is passed to eval_point."""
-    results={p:{ptv:[np.nan]*len(theta_grid) for ptv in pts} for p in PARAMS}
+    results={param:{ptv:[np.nan]*len(theta_grid) for ptv in pts} for param in PARAMS}
     tasks=[(ipt,it,ptv,th) for ipt,ptv in enumerate(pts) for it,th in enumerate(theta_grid)]
     total=len(tasks); done=0
     print(f"  [theta-scan] {total} points | {workers} threads")
@@ -368,6 +441,29 @@ def parallel_scan_vs_theta_for_detector(theta_grid, pts, geom, npoints, minmeas,
         for fut in cf.as_completed(futs):
             ipt,it,ptv,th=futs[fut]; vals=fut.result()
             for param in PARAMS: results[param][ptv][it]=vals[param]
+            with progress_lock:
+                done+=1
+                if done%step==0 or done==total:
+                    print(f"    progress: {done}/{total} ({100*done/total:.1f}%)")
+    return results
+
+def parallel_scan_vs_theta_by_p_mag_for_detector(theta_grid, pts, geom, npoints, minmeas, doKalman, doRes, doMS, workers, verbose):
+    """Scan over theta values at fixed |p| values (pts). For each (|p|, theta) point,
+    the total momentum |p| is passed to eval_point."""
+    results={param:{p_magv:[np.nan]*len(theta_grid) for p_magv in pts} for param in PARAMS}
+    tasks=[(ip_mag,it,p_magv,th) for ip_mag,p_magv in enumerate(pts) for it,th in enumerate(theta_grid)]
+    total=len(tasks); done=0
+    print(f"  [theta-scan] {total} points | {workers} threads")
+    with cf.ThreadPoolExecutor(max_workers=workers) as ex:
+        def _submit(ip_mag, it, p_magv, th):
+            p_mag = p_magv
+            return ex.submit(eval_point, p_mag, th, geom, npoints, minmeas, doKalman, doRes, doMS, verbose)
+        futs={_submit(ip_mag,it,p_magv,th):(ip_mag,it,p_magv,th)
+              for ip_mag,it,p_magv,th in tasks}
+        step=max(1,total//20)
+        for fut in cf.as_completed(futs):
+            ip_mag,it,p_magv,th=futs[fut]; vals=fut.result()
+            for param in PARAMS: results[param][p_magv][it]=vals[param]
             with progress_lock:
                 done+=1
                 if done%step==0 or done==total:
@@ -741,21 +837,21 @@ def _save_both(figpath_png: Path):
 
 _RATIO_FIG_SIZE   = (8.2, 7.0)
 _RATIO_HEIGHT_KW  = {"height_ratios": [3, 1], "hspace": 0.06}
-_SINGLE_FIG_SIZE  = (8.2, 5.8)
+# _SINGLE_FIG_SIZE  = (8.2, 5.8)
+_SINGLE_FIG_SIZE  = (8.2, 7.0)
 
 
-def make_plot_vs_p_multi(param, p_grid, curves_list, labels, bfields, outdir):
+def make_plot_vs_pt_multi(param, pt_grid, curves_list, labels, bfields, outdir):
     cfg = PLOT_CFG[param]
     multi = len(curves_list) > 1
 
-    if multi:
-        fig, (ax_main, ax_rat) = plt.subplots(
-            2, 1, figsize=_RATIO_FIG_SIZE, sharex=True,
-            gridspec_kw=_RATIO_HEIGHT_KW,
-        )
-    else:
-        fig, ax_main = plt.subplots(figsize=_SINGLE_FIG_SIZE)
-        ax_rat = None
+    fig, (ax_main, ax_rat) = plt.subplots(
+        2, 1, figsize=_RATIO_FIG_SIZE, sharex=True,
+        gridspec_kw=_RATIO_HEIGHT_KW,
+    )
+
+    if not multi:
+        ax_rat.axis('off')
 
     for idx, curves in enumerate(curves_list):
         ls = LINESTYLES[idx % len(LINESTYLES)]
@@ -763,7 +859,7 @@ def make_plot_vs_p_multi(param, p_grid, curves_list, labels, bfields, outdir):
         for th in sorted(curves.keys()):
             color = COLOR_BY_THETA.get(th, None)
             ax_main.plot(
-                p_grid, curves[th],
+                pt_grid, curves[th],
                 linestyle=ls, lw=1.8, color=color,
                 label=fr"{lab_prefix}, $\theta={th:.0f}^\circ$"
             )
@@ -779,20 +875,21 @@ def make_plot_vs_p_multi(param, p_grid, curves_list, labels, bfields, outdir):
                 cur = np.array(curves_list[idx][th], dtype=float)
                 with np.errstate(divide="ignore", invalid="ignore"):
                     ratio = np.where(ref != 0, cur / ref, np.nan)
-                ax_rat.plot(p_grid, ratio, linestyle=ls, lw=1.5, color=color)
+                ax_rat.plot(pt_grid, ratio, linestyle=ls, lw=1.5, color=color)
         ax_rat.axhline(1.0, color="k", ls="--", lw=0.8)
         ax_rat.set_ylabel("Ratio")
-        ax_rat.set_xlabel(cfg["xlabel_p"])
-        ax_rat.set_ylim(cfg.get("ratio_ymin_p", cfg.get("ratio_ymin", 0.0)),
-                        cfg.get("ratio_ymax_p", cfg.get("ratio_ymax", 2.0)))
-        if cfg["logx_p"]:
+        ax_rat.set_xlabel(cfg["xlabel_pt"])
+        ax_rat.set_ylim(cfg.get("ratio_ymin_pt", cfg.get("ratio_ymin", 0.0)),
+                        cfg.get("ratio_ymax_pt", cfg.get("ratio_ymax", 2.0)))
+        if cfg["logx_pt"]:
             ax_rat.set_xscale("log")
         ax_rat.grid(True, which="both", alpha=0.3)
 
     ax_main.set_ylabel(cfg["ylabel"])
     if not multi:
-        ax_main.set_xlabel(cfg["xlabel_p"])
-    if cfg["logx_p"]: ax_main.set_xscale("log")
+        ax_main.set_xlabel(cfg["xlabel_pt"])
+        ax_main.tick_params(axis='x', labelbottom=True)
+    if cfg["logx_pt"]: ax_main.set_xscale("log")
     if cfg["logy"]:   ax_main.set_yscale("log")
     ax_main.set_ylim(cfg["ymin"], cfg["ymax"])
     ax_main.grid(True, which="both", alpha=0.3)
@@ -800,32 +897,31 @@ def make_plot_vs_p_multi(param, p_grid, curves_list, labels, bfields, outdir):
     ax_main.legend(loc="lower center", bbox_to_anchor=(0.5, 1.01),
                    ncol=n_det if multi else 1, borderaxespad=0, frameon=True)
     fig.tight_layout()
-    _save_both(Path(outdir) / f"{param}_vs_p_by_theta.png")
+    _save_both(Path(outdir) / f"{param}_vs_pt_by_theta.png")
     plt.close(fig)
 
 
-def make_plot_vs_theta_multi(param, theta_grid, curves_list, labels, bfields, outdir):
+def make_plot_vs_p_mag_multi(param, p_mag_grid, curves_list, labels, bfields, outdir):
     cfg = PLOT_CFG[param]
     multi = len(curves_list) > 1
 
-    if multi:
-        fig, (ax_main, ax_rat) = plt.subplots(
-            2, 1, figsize=_RATIO_FIG_SIZE, sharex=True,
-            gridspec_kw=_RATIO_HEIGHT_KW,
-        )
-    else:
-        fig, ax_main = plt.subplots(figsize=_SINGLE_FIG_SIZE)
-        ax_rat = None
+    fig, (ax_main, ax_rat) = plt.subplots(
+        2, 1, figsize=_RATIO_FIG_SIZE, sharex=True,
+        gridspec_kw=_RATIO_HEIGHT_KW,
+    )
+
+    if not multi:
+        ax_rat.axis('off')
 
     for idx, curves in enumerate(curves_list):
         ls = LINESTYLES[idx % len(LINESTYLES)]
         lab_prefix = f"{labels[idx]} ({bfields[idx]:g}T)" if labels[idx] else f"Card {idx+1} ({bfields[idx]:g}T)"
-        for pval in sorted(curves.keys()):
-            color = COLOR_BY_PVAL.get(pval, None)
+        for th in sorted(curves.keys()):
+            color = COLOR_BY_THETA.get(th, None)
             ax_main.plot(
-                theta_grid, curves[pval],
+                p_mag_grid, curves[th],
                 linestyle=ls, lw=1.8, color=color,
-                label=fr"{lab_prefix}, $p_T={pval:.0f}\,\mathrm{{GeV}}$"
+                label=fr"{lab_prefix}, $\theta={th:.0f}^\circ$"
             )
 
     # ratio panel: config[i] / config[0] for i >= 1
@@ -833,10 +929,70 @@ def make_plot_vs_theta_multi(param, theta_grid, curves_list, labels, bfields, ou
         ref_curves = curves_list[0]
         for idx in range(1, len(curves_list)):
             ls = LINESTYLES[idx % len(LINESTYLES)]
-            for pval in sorted(curves_list[idx].keys()):
-                color = COLOR_BY_PVAL.get(pval, None)
-                ref = np.array(ref_curves[pval], dtype=float)
-                cur = np.array(curves_list[idx][pval], dtype=float)
+            for th in sorted(curves_list[idx].keys()):
+                color = COLOR_BY_THETA.get(th, None)
+                ref = np.array(ref_curves[th], dtype=float)
+                cur = np.array(curves_list[idx][th], dtype=float)
+                with np.errstate(divide="ignore", invalid="ignore"):
+                    ratio = np.where(ref != 0, cur / ref, np.nan)
+                ax_rat.plot(p_mag_grid, ratio, linestyle=ls, lw=1.5, color=color)
+        ax_rat.axhline(1.0, color="k", ls="--", lw=0.8)
+        ax_rat.set_ylabel("Ratio")
+        ax_rat.set_xlabel(cfg["xlabel_p_mag"])
+        ax_rat.set_ylim(cfg.get("ratio_ymin_p_mag", cfg.get("ratio_ymin", 0.0)),
+                        cfg.get("ratio_ymax_p_mag", cfg.get("ratio_ymax", 2.0)))
+        if cfg["logx_p_mag"]:
+            ax_rat.set_xscale("log")
+        ax_rat.grid(True, which="both", alpha=0.3)
+
+    ax_main.set_ylabel(cfg["ylabel"])
+    if not multi:
+        ax_main.set_xlabel(cfg["xlabel_p_mag"])
+        ax_main.tick_params(axis='x', labelbottom=True)
+    if cfg["logx_p_mag"]: ax_main.set_xscale("log")
+    if cfg["logy"]:   ax_main.set_yscale("log")
+    ax_main.set_ylim(cfg["ymin"], cfg["ymax"])
+    ax_main.grid(True, which="both", alpha=0.3)
+    n_det = len(curves_list)
+    ax_main.legend(loc="lower center", bbox_to_anchor=(0.5, 1.01),
+                   ncol=n_det if multi else 1, borderaxespad=0, frameon=True)
+    fig.tight_layout()
+    _save_both(Path(outdir) / f"{param}_vs_p_mag_by_theta.png")
+    plt.close(fig)
+
+
+def make_plot_vs_theta_by_pt_multi(param, theta_grid, curves_list, labels, bfields, outdir):
+    cfg = PLOT_CFG[param]
+    multi = len(curves_list) > 1
+
+    fig, (ax_main, ax_rat) = plt.subplots(
+        2, 1, figsize=_RATIO_FIG_SIZE, sharex=True,
+        gridspec_kw=_RATIO_HEIGHT_KW,
+    )
+
+    if not multi:
+        ax_rat.axis('off')
+
+    for idx, curves in enumerate(curves_list):
+        ls = LINESTYLES[idx % len(LINESTYLES)]
+        lab_prefix = f"{labels[idx]} ({bfields[idx]:g}T)" if labels[idx] else f"Card {idx+1} ({bfields[idx]:g}T)"
+        for ptval in sorted(curves.keys()):
+            color = COLOR_BY_PTVAL.get(ptval, None)
+            ax_main.plot(
+                theta_grid, curves[ptval],
+                linestyle=ls, lw=1.8, color=color,
+                label=fr"{lab_prefix}, $p_T={ptval:.0f}\,\mathrm{{GeV}}$"
+            )
+
+    # ratio panel: config[i] / config[0] for i >= 1
+    if multi and ax_rat is not None:
+        ref_curves = curves_list[0]
+        for idx in range(1, len(curves_list)):
+            ls = LINESTYLES[idx % len(LINESTYLES)]
+            for ptval in sorted(curves_list[idx].keys()):
+                color = COLOR_BY_PTVAL.get(ptval, None)
+                ref = np.array(ref_curves[ptval], dtype=float)
+                cur = np.array(curves_list[idx][ptval], dtype=float)
                 with np.errstate(divide="ignore", invalid="ignore"):
                     ratio = np.where(ref != 0, cur / ref, np.nan)
                 ax_rat.plot(theta_grid, ratio, linestyle=ls, lw=1.5, color=color)
@@ -852,6 +1008,7 @@ def make_plot_vs_theta_multi(param, theta_grid, curves_list, labels, bfields, ou
     ax_main.set_ylabel(cfg["ylabel"])
     if not multi:
         ax_main.set_xlabel(cfg["xlabel_t"])
+        ax_main.tick_params(axis='x', labelbottom=True)
     if cfg["logx_t"]: ax_main.set_xscale("log")
     if cfg["logy"]:   ax_main.set_yscale("log")
     ax_main.set_ylim(cfg["ymin"], cfg["ymax"])
@@ -860,7 +1017,67 @@ def make_plot_vs_theta_multi(param, theta_grid, curves_list, labels, bfields, ou
     ax_main.legend(loc="lower center", bbox_to_anchor=(0.5, 1.01),
                    ncol=n_det if multi else 1, borderaxespad=0, frameon=True)
     fig.tight_layout()
-    _save_both(Path(outdir) / f"{param}_vs_theta_by_p.png")
+    _save_both(Path(outdir) / f"{param}_vs_theta_by_pt.png")
+    plt.close(fig)
+
+def make_plot_vs_theta_by_p_mag_multi(param, theta_grid, curves_list, labels, bfields, outdir):
+    cfg = PLOT_CFG[param]
+    multi = len(curves_list) > 1
+
+    fig, (ax_main, ax_rat) = plt.subplots(
+        2, 1, figsize=_RATIO_FIG_SIZE, sharex=True,
+        gridspec_kw=_RATIO_HEIGHT_KW,
+    )
+
+    if not multi:
+        ax_rat.axis('off')
+
+    for idx, curves in enumerate(curves_list):
+        ls = LINESTYLES[idx % len(LINESTYLES)]
+        lab_prefix = f"{labels[idx]} ({bfields[idx]:g}T)" if labels[idx] else f"Card {idx+1} ({bfields[idx]:g}T)"
+        for p_magval in sorted(curves.keys()):
+            color = COLOR_BY_PVAL.get(p_magval, None)
+            ax_main.plot(
+                theta_grid, curves[p_magval],
+                linestyle=ls, lw=1.8, color=color,
+                label=fr"{lab_prefix}, $p={p_magval:.0f}\,\mathrm{{GeV}}$"
+            )
+
+    # ratio panel: config[i] / config[0] for i >= 1
+    if multi and ax_rat is not None:
+        ref_curves = curves_list[0]
+        for idx in range(1, len(curves_list)):
+            ls = LINESTYLES[idx % len(LINESTYLES)]
+            for p_magval in sorted(curves_list[idx].keys()):
+                color = COLOR_BY_PVAL.get(p_magval, None)
+                ref = np.array(ref_curves[p_magval], dtype=float)
+                cur = np.array(curves_list[idx][p_magval], dtype=float)
+                with np.errstate(divide="ignore", invalid="ignore"):
+                    ratio = np.where(ref != 0, cur / ref, np.nan)
+                ax_rat.plot(theta_grid, ratio, linestyle=ls, lw=1.5, color=color)
+        ax_rat.axhline(1.0, color="k", ls="--", lw=0.8)
+        ax_rat.set_ylabel("Ratio")
+        ax_rat.set_xlabel(cfg["xlabel_t"])
+        ax_rat.set_ylim(cfg.get("ratio_ymin_t", cfg.get("ratio_ymin", 0.0)),
+                        cfg.get("ratio_ymax_t", cfg.get("ratio_ymax", 2.0)))
+        if cfg["logx_t"]:
+            ax_rat.set_xscale("log")
+        ax_rat.grid(True, which="both", alpha=0.3)
+
+    ax_main.set_ylabel(cfg["ylabel"])
+    if not multi:
+        ax_main.set_xlabel(cfg["xlabel_t"])
+        ax_main.tick_params(axis='x', labelbottom=True)
+    if cfg["logx_t"]: ax_main.set_xscale("log")
+    if cfg["logy"]:   ax_main.set_yscale("log")
+    ax_main.set_ylim(cfg["ymin"], cfg["ymax"])
+    ax_main.grid(True, which="both", alpha=0.3)
+    n_det = len(curves_list)
+    ax_main.legend(loc="lower center", bbox_to_anchor=(0.5, 1.01),
+                   ncol=n_det if multi else 1, borderaxespad=0, frameon=True)
+        
+    fig.tight_layout()
+    _save_both(Path(outdir) / f"{param}_vs_theta_by_p_mag.png")
     plt.close(fig)
 
 
@@ -952,10 +1169,10 @@ def make_hist_plots_multi(hist_samples_all, labels, bfields, outdir):
                 )
 
                 plt.tight_layout()
-                # ---- filename: PARAM_hist_pX_theta_thY ----
+                # ---- filename: PARAM_hist_p_magX_theta_thY ----
                 p_tag = int(round(p))
                 th_tag = int(round(theta))
-                base = f"{param}_hist_p{p_tag}_theta_th{th_tag}"
+                base = f"{param}_hist_p_mag{p_tag}_theta_th{th_tag}"
                 _save_both(outdir / f"{base}.png")
                 plt.close()
 
@@ -1046,7 +1263,7 @@ def _latex_escape(s: str) -> str:
     # minimal escape for underscores, percent, ampersand
     return s.replace("\\", r"\textbackslash{}").replace("_", r"\_").replace("%", r"\%").replace("&", r"\&")
 
-def write_beamer_report(outdir: Path, cards: List[str], bfields: List[float], labels: List[str]) -> Path:
+def write_beamer_report(outdir: Path, cards: List[str], bfields: List[float], labels: List[str], scan_variable: str) -> Path:
     tex_path = outdir / "report.tex"
 
     def esc_text(s: str) -> str:
@@ -1156,8 +1373,8 @@ def write_beamer_report(outdir: Path, cards: List[str], bfields: List[float], la
 
         # ============ Resolution (always two per slide) ============
         for param in PARAMS:
-            left  = f"{param}_vs_p_by_theta.pdf"
-            right = f"{param}_vs_theta_by_p.pdf"
+            left = f"{param}_vs_pt_by_theta.pdf" if scan_variable in ("pt", "both") else f"{param}_vs_p_mag_by_theta.pdf" 
+            right = f"{param}_vs_theta_by_pt.pdf" if scan_variable in ("pt", "both") else f"{param}_vs_theta_by_p_mag.pdf" 
             f.write(r"\begin{frame}[plain]" "\n")
             f.write(rf"\frametitle{{Resolution — {esc_text(param)} (left: vs $p$, right: vs $\theta$)}}" "\n")
             f.write(r"\centering\vfill" "\n")
@@ -1259,6 +1476,7 @@ def main():
     ap.add_argument("--workers", type=int, default=os.cpu_count(), help="Parallel threads per detector")
     ap.add_argument("--verbose-points", action="store_true", help="Print each (p,theta) point as it starts")
     ap.add_argument("--latex", action="store_true", help="Produce a LaTeX report (report.tex + report.pdf if pdflatex is available)")
+    ap.add_argument("--scan_variable", choices=["pt", "p", "both"], default="both", help="Momentum scan type: 'pt' (transverse), 'p' (total), or 'both'")
     args=ap.parse_args()
 
     # Validate that all specified card files exist
@@ -1315,20 +1533,20 @@ def main():
 
     # Build grids for scans
     pt_grid      = build_pt_grid()
+    p_mag_grid      = build_p_mag_grid()
     theta_grid   = build_theta_grid()
     pt_for_tscan = get_pt_for_tscan()
-
-    # Accumulate scan results across detectors
-    res_vs_p_all = []
-    res_vs_theta_all = []
+    p_mag_for_tscan = get_p_mag_for_tscan()
 
     # Per-card outputs (for LaTeX inclusion)
     geom_pdfs = []
     mat_pdfs  = []
 
     # Accumulate scan results across detectors
-    res_vs_p_all = []
-    res_vs_theta_all = []
+    res_vs_pt_all = []
+    res_vs_p_mag_all = []
+    res_vs_theta_by_pt_all = []
+    res_vs_theta_by_p_mag_all = []
 
     # Per-detector hist samples for resolution distributions
     hist_samples_all = []
@@ -1359,25 +1577,46 @@ def main():
         mat_pdf_path = Path(outdir) / f"{base}_mat.pdf"
         plot_material_budget(card, str(mat_pdf_path))
 
-        print("Scanning vs pT ...")
-        res_p = parallel_scan_vs_p_for_detector(
-            pt_grid, THETA_SET_FOR_PSCAN, G,
-            args.npoints, args.minmeas, dKalman, dRes, dMS, args.workers, args.verbose_points
-        )
-        print("Scanning vs theta ...")
-        res_t = parallel_scan_vs_theta_for_detector(
-            theta_grid, pt_for_tscan, G,
-            args.npoints, args.minmeas, dKalman, dRes, dMS, args.workers, args.verbose_points
-        )
-        res_vs_p_all.append(res_p)
-        res_vs_theta_all.append(res_t)
+        if args.scan_variable in ("pt", "both"):
 
-        # Histograms (same chosen p/theta as before)
-        p_for_hists = [100]
+            print("Scanning vs pT ...")
+            res_pt = parallel_scan_vs_pt_for_detector(
+                pt_grid, THETA_SET_FOR_PTSCAN, G,
+                args.npoints, args.minmeas, dKalman, dRes, dMS, args.workers, args.verbose_points
+            )
+            res_vs_pt_all.append(res_pt)
+
+            print("Scanning vs theta by pT ...")
+            res_t_by_pt = parallel_scan_vs_theta_by_pt_for_detector(
+                theta_grid, pt_for_tscan, G,
+                args.npoints, args.minmeas, dKalman, dRes, dMS, args.workers, args.verbose_points
+            )
+            res_vs_theta_by_pt_all.append(res_t_by_pt)
+
+        if args.scan_variable in ("p", "both"):
+
+
+            print("Scanning vs |p| ...")
+            res_p_mag = parallel_scan_vs_p_mag_for_detector(
+                p_mag_grid, THETA_SET_FOR_PSCAN, G,
+                args.npoints, args.minmeas, dKalman, dRes, dMS, args.workers, args.verbose_points
+            )
+            res_vs_p_mag_all.append(res_p_mag)
+
+            print("Scanning vs theta by |p| ...")
+            res_t_by_p_mag = parallel_scan_vs_theta_by_p_mag_for_detector(
+                theta_grid, p_mag_for_tscan, G,
+                args.npoints, args.minmeas, dKalman, dRes, dMS, args.workers, args.verbose_points
+            )
+            res_vs_theta_by_p_mag_all.append(res_t_by_p_mag)
+
+
+        # Histograms (note that these are in |p| not pT, same chosen p/theta as before)
+        p_mag_for_hists = [100]
         theta_for_hists = [90]
         hist_samples = collect_hist_samples_for_detector(
             G,
-            p_for_hists,
+            p_mag_for_hists,
             theta_for_hists,
             args.npoints,
             args.minmeas,
@@ -1391,16 +1630,35 @@ def main():
 
     # 4) Overlay plots (resolution)
     for param in PARAMS:
-        make_plot_vs_p_multi(
-            param, pt_grid,
-            [det_res[param] for det_res in res_vs_p_all],
-            labels, bfields, str(outdir)
-        )
-        make_plot_vs_theta_multi(
-            param, theta_grid,
-            [det_res[param] for det_res in res_vs_theta_all],
-            labels, bfields, str(outdir)
-        )
+
+        if args.scan_variable in ("pt", "both"):
+
+            make_plot_vs_pt_multi(
+                param, pt_grid,
+                [det_res[param] for det_res in res_vs_pt_all],
+                labels, bfields, str(outdir)
+            )
+
+            make_plot_vs_theta_by_pt_multi(
+                param, theta_grid,
+                [det_res[param] for det_res in res_vs_theta_by_pt_all],
+                labels, bfields, str(outdir)
+            )
+
+        if args.scan_variable in ("p", "both"):
+
+            make_plot_vs_p_mag_multi(
+                param, p_mag_grid,
+                [det_res[param] for det_res in res_vs_p_mag_all],
+                labels, bfields, str(outdir)
+            )
+
+
+            make_plot_vs_theta_by_p_mag_multi(
+                param, theta_grid,
+                [det_res[param] for det_res in res_vs_theta_by_p_mag_all],
+                labels, bfields, str(outdir)
+            )
 
     # 4b) Histogram plots of resolution distributions (multi-detector)
     make_hist_plots_multi(hist_samples_all, labels, bfields, str(outdir))
@@ -1408,7 +1666,7 @@ def main():
 
     # 5) LaTeX report (optional)
     if args.latex:
-        tex_path = write_beamer_report(outdir, cards, bfields, labels)
+        tex_path = write_beamer_report(outdir, cards, bfields, labels, args.scan_variable)
         build_pdf(tex_path, report_pdf_path)
 
     print(f"\nDone. Outputs in {outdir.resolve()}")
