@@ -31,12 +31,12 @@ PLOT_CFG = {
         "logx_p_mag": True,
         "logx_t": False,
         "logy": True,
-        "ratio_ymin_pt": 0.0,
-        "ratio_ymax_pt": 2.0,
-        "ratio_ymin_p_mag": 0.0,
-        "ratio_ymax_p_mag": 2.0,
-        "ratio_ymin_t": 0.0,
-        "ratio_ymax_t": 2.0,
+        "ratio_ymin_pt": 0.5,
+        "ratio_ymax_pt": 1.5,
+        "ratio_ymin_p_mag": 0.7,
+        "ratio_ymax_p_mag": 1.1,
+        "ratio_ymin_t": 0.5,
+        "ratio_ymax_t": 1.5,
     },
 
     "D": {
@@ -50,11 +50,11 @@ PLOT_CFG = {
         "logx_p_mag": False,
         "logx_t": False,
         "logy": True,
-        "ratio_ymin_pt": 0.8,
+        "ratio_ymin_pt": 0.5,
         "ratio_ymax_pt": 1.5,
-        "ratio_ymin_p_mag": 0.8,
-        "ratio_ymax_p_mag": 1.5,
-        "ratio_ymin_t": 0.8,
+        "ratio_ymin_p_mag": 0.7,
+        "ratio_ymax_p_mag": 1.1,
+        "ratio_ymin_t": 0.5,
         "ratio_ymax_t": 1.5,
     },
 
@@ -69,11 +69,11 @@ PLOT_CFG = {
         "logx_p_mag": False,
         "logx_t": False,
         "logy": True,
-        "ratio_ymin_pt": 0.8,
+        "ratio_ymin_pt": 0.5,
         "ratio_ymax_pt": 1.5,
-        "ratio_ymin_p_mag": 0.8,
-        "ratio_ymax_p_mag": 1.5,
-        "ratio_ymin_t": 0.8,
+        "ratio_ymin_p_mag": 0.7,
+        "ratio_ymax_p_mag": 1.1,
+        "ratio_ymin_t": 0.5,
         "ratio_ymax_t": 1.5,
     },
 
@@ -88,12 +88,12 @@ PLOT_CFG = {
         "logx_p_mag": False,
         "logx_t": False,
         "logy": True,
-        "ratio_ymin_pt": 1.0,
-        "ratio_ymax_pt": 2.0,
-        "ratio_ymin_p_mag": 1.0,
-        "ratio_ymax_p_mag": 2.0,
-        "ratio_ymin_t": 1.0,
-        "ratio_ymax_t": 2.0,
+        "ratio_ymin_pt": 0.5,
+        "ratio_ymax_pt": 1.5,
+        "ratio_ymin_p_mag": 0.5,
+        "ratio_ymax_p_mag": 1.5,
+        "ratio_ymin_t": 0.5,
+        "ratio_ymax_t": 1.5,
     },
 
     "Phi": {
@@ -107,12 +107,12 @@ PLOT_CFG = {
         "logx_p_mag": False,
         "logx_t": False,
         "logy": True,
-        "ratio_ymin_pt": 1.0,
-        "ratio_ymax_pt": 2.0,
-        "ratio_ymin_p_mag": 1.0,
-        "ratio_ymax_p_mag": 2.0,
-        "ratio_ymin_t": 1.0,
-        "ratio_ymax_t": 2.0,
+        "ratio_ymin_pt": 0.5,
+        "ratio_ymax_pt": 1.5,
+        "ratio_ymin_p_mag": 0.5,
+        "ratio_ymax_p_mag": 1.5,
+        "ratio_ymin_t": 0.5,
+        "ratio_ymax_t": 1.5,
     },
 
 }
@@ -166,7 +166,7 @@ plt.rcParams.update({
 
 # theta values used in the plots vs pT (fixed list)
 THETA_SET_FOR_PTSCAN = [15.0, 45.0, 90.0]  # deg
-#THETA_SET_FOR_PTSCAN = [90.0]  # deg
+# THETA_SET_FOR_PTSCAN = [90.0]  # deg
 
 # theta values used in the plots vs |p| (fixed list)
 THETA_SET_FOR_PSCAN = [15.0, 45.0, 90.0]  # deg
@@ -190,7 +190,7 @@ PT_LIST_TSCAN = [1.0, 10.0, 100]   # GeV
 P_LIST_TSCAN = [1.0, 45.6, 80.0, 120.0, 182.5]   # GeV
 
 PARAMS = ["Pt", "D", "Z0", "Theta", "Phi"]  # custom order
-LINESTYLES = ["-", "--", "-.", ":"]  # cycles for multiple detectors
+LINESTYLES = ["-", "--", "-.", ":", (0, (3, 1, 1, 1, 1, 1))]  # cycles for multiple detectors
 progress_lock = threading.Lock()
 
 
